@@ -1,0 +1,10 @@
+{% for item in items %}
+%===============================================================================
+% '{{ item.position }}' at '{{ item.company }}'
+%===============================================================================
+\subsection{{'{{' + item.position + ' \hfill ' + item.start_date + ' --- ' + item.end_date + '}}' }}
+\subtext{{ '{' + item.company + ' \hfill ' + item.location + '}' }}
+\begin{zitemize}
+{% for bullet in item.description %}    \item {{ bullet }}
+{% endfor %}\end{zitemize}
+{% endfor %}

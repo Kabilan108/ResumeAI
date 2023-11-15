@@ -1,0 +1,34 @@
+\documentclass[ letter,10pt ]{article}
+\usepackage[ utf8 ]{inputenc}
+
+\usepackage{TLCresume}
+
+% Contact Information
+\def\name{ {{ items.name }} } % Name Here
+\def\phone{ {{ items.phone }} }
+\def\city{ {{ items.location }} }
+\def\email{ {{ items.email }} }
+\def\LinkedIn{ {{ items.linkedin_user }} } % linkedin.com/in/{ items.linkedin_user }
+\def\github{ {{ items.github_user }} } % github username
+\def\role{ {{ items.role }} } % JOB TITLE
+\def\portfolio{ {{ items.portfolio }} }
+
+\input{_header}
+
+\begin{document}
+
+    % \input{sections/objective}
+
+    \section{Skills}
+    \input{sections/skills}
+
+    \section{Technical Experience}
+    \input{sections/experience}
+
+    \section{Education}
+    \input{sections/education}
+
+    \section{Activities}
+    \input{sections/activities}
+
+\end{document}

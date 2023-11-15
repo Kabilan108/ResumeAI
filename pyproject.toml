@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "resume"
+version = "0.1.0"
+description = ""
+authors = ["Tony Okeke <tonykabilanokeke@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pydantic = {extras = ["email"], version = "^2.4.2"}
+openai = "^0.28.1"
+instructor = "^0.2.9"
+rich = "^13.6.0"
+jupyter = "^1.0.0"
+pydantic-extra-types = "^2.1.0"
+phonenumbers = "^8.13.24"
+
+
+[tool.poetry.group.dev.dependencies]
+jinja2 = "^3.1.2"
+black = "^23.10.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

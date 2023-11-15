@@ -1,0 +1,5 @@
+{% for degree in items.degrees %}
+\skills{{ '{' + degree.title + '}' }},  {{ degree.university }} \hfill {{ degree.graduation }}
+{% endfor %}
+{% if items.specializations %}
+\skills{{ {} }} Concentrations: \textit{{'{'}}{% for specialization in items.specializations %}{{ specialization }}{% if not loop.last %}{% if not loop.index == loop.length - 1 %}, {% else %} & {% endif %}{% endif %}{% endfor %}{{'}'}} \hfill {% endif %}{% if items.gpa %} \skills{{ '{} GPA: ' + items.gpa }}{% endif %}
