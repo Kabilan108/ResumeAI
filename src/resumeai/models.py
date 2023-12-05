@@ -2,15 +2,17 @@
 
 # flake8: noqa: E501
 
-from pydantic import Field, EmailStr, model_serializer
-from instructor import OpenAISchema
+from pydantic import BaseModel, Field, EmailStr, model_serializer
 
 from typing import Any, Dict, List, Optional, Union
 from abc import ABC, abstractmethod
 
 
-class _Base(OpenAISchema, ABC):
-    template: str = Field(..., description="The template used to generate the resume. DO NOT CHANGE THIS FIELD.")
+class Base(BaseModel, ABC):
+    jinja_template: Optional[str] = Field(
+        None,
+        description="The template used to generate the resume. DO NOT CHANGE THIS FIELD.",
+    )
 
     @abstractmethod
     def get_items(self):
@@ -24,7 +26,7 @@ class _Base(OpenAISchema, ABC):
         }
 
 
-class _Degree(OpenAISchema):
+class _Degree(BaseModel):
     """
     A single degree held by a user.
     """
@@ -36,7 +38,7 @@ class _Degree(OpenAISchema):
     )
 
 
-class _Job(OpenAISchema):
+class _Job(BaseModel):
     """
     A single job or internship from a user's resume.
     """
@@ -51,7 +53,7 @@ class _Job(OpenAISchema):
     )
 
 
-class _Activity(OpenAISchema):
+class _Activity(BaseModel):
     """
     A single club or organization item from a resume.
     """
@@ -62,7 +64,7 @@ class _Activity(OpenAISchema):
     endDate: str = Field(..., description="The end date of the position")
 
 
-class _SkillList(OpenAISchema):
+class _SkillList(BaseModel):
     """
     A list of skills of a specific type.
     """
@@ -79,7 +81,7 @@ class _SkillList(OpenAISchema):
         return {"type": self.type, "skills": ", ".join(self.skills)}
 
 
-class Bio(_Base):
+class Bio(Base):
     """
     A user's personal information.
     """
@@ -99,14 +101,14 @@ class Bio(_Base):
         None, description="The user's portfolio or personal website URL."
     )
     role: Optional[str] = Field("", description="The user's current role or position.")
-    
-    template: str = "resume"
+
+    jinja_template: str = "resume"
 
     def get_items(self):
         return self.model_dump()
 
 
-class Education(OpenAISchema):
+class Education(Base):
     """
     A list of degrees and associated information from a user's resume.
     """
@@ -118,8 +120,8 @@ class Education(OpenAISchema):
         None, description="A list of specializations or minors held by the user"
     )
     gpa: Optional[Union[int, float]] = Field(None, description="The user's GPA")
-    
-    template: str = "sections/education"
+
+    jinja_template: str = "sections/education"
 
     def get_items(self):
         return {
@@ -129,46 +131,46 @@ class Education(OpenAISchema):
         }
 
 
-class Experience(OpenAISchema):
+class Experience(Base):
     """
     A list of all jobs and internships from the user's resume.
     """
 
     items: List[_Job]
-    
-    template: str = "sections/experience"
+
+    jinja_template: str = "sections/experience"
 
     def get_items(self):
         return self.model_dump()["items"]
 
 
-class Activities(OpenAISchema):
+class Activities(Base):
     """
     A list of clubs or organizations from user's resume. Ordered by start date.
     """
 
     items: List[_Activity]
-    
+
     template: str = "sections/activities"
 
     def get_items(self):
         return self.model_dump()["items"]
 
 
-class Skills(OpenAISchema):
+class Skills(Base):
     """
     A list of all skills from a user's resume, organized by type.
     """
 
     items: List[_SkillList]
-    
+
     template: str = "sections/skills"
 
     def get_items(self):
         return self.model_dump()["items"]
 
 
-class Resume(OpenAISchema):
+class Resume(Base):
     """
     A user's resume.
     """
@@ -180,7 +182,7 @@ class Resume(OpenAISchema):
         ..., description="The user's extracurricular activities"
     )
     skills: Skills = Field(..., description="The user's skills")
-    
+
     template: Optional[str] = None
 
     def get_items(self):
@@ -193,5 +195,11 @@ class Resume(OpenAISchema):
         }
 
     def __iter__(self):
-        for attr in [self.bio, self.education, self.experience, self.activities, self.skills]:
+        for attr in [
+            self.bio,
+            self.education,
+            self.experience,
+            self.activities,
+            self.skills,
+        ]:
             yield attr
