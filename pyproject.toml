@@ -16,6 +16,9 @@ phonenumbers = "^8.13.24"
 llama-index = "^0.9.12"
 unstructured = {extras = ["html"], version = "^0.11.2"}
 selenium = "^4.15.2"
+pydantic-settings = "^2.1.0"
+click = "^8.1.7"
+streamlit = "^1.29.0"
 
 
 [tool.poetry.group.dev.dependencies]
