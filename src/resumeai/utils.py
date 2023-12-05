@@ -1,9 +1,16 @@
-"""Utility functions for ResumeAI."""
+# src/resumeai/utils.py
 
 from openai import OpenAI, AsyncOpenAI
 import instructor
+import tiktoken
 
-import os
+from resumeai import settings
+
+
+def count_tokens(text) -> int:
+    """Count tokens with TikToken"""
+    encoding = tiktoken.get_encoding("cl100k_base")
+    return len(encoding.encode(text))
 
 
 def get_client(is_async: bool = False) -> OpenAI | AsyncOpenAI:
@@ -12,7 +19,7 @@ def get_client(is_async: bool = False) -> OpenAI | AsyncOpenAI:
     kwargs = {
         "base_url": "https://oai.hconeai.com/v1",
         "default_headers": {
-            "Helicone-Auth": f"Bearer {os.environ['HELICONE_API_KEY']}",
+            "Helicone-Auth": f"Bearer {settings.HELICONE_API_KEY}",
             "Helicone-Property-Project": "ResumeAI"
         }
     }

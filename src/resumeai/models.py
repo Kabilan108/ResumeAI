@@ -1,4 +1,4 @@
-"""Pydantic models for ResumeAI."""
+# src/resumeai/models.py
 
 # flake8: noqa: E501
 
